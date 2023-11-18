@@ -189,7 +189,6 @@ export default function CreateQuiz() {
 
     const handleInputChange = (e) => {
         // Destructure the name and value properties off of event.target
-        // Update the appropriate state
         console.log("handleInputChange reached");
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -223,22 +222,38 @@ export default function CreateQuiz() {
         setFormData({ ...formData, questions_answers: updatedQs });
     };
 
+    // const handleQuestionTextChange = (qIndex, e) => {
+    //     // Destructure the name and value properties off of event.target
+    //     const { value } = e.target;
+    //     const updatedQs = [...formData.questions_answers];
+    //     // Set the text for this question
+    //     updatedQs[qIndex].text = value;
+    //     setFormData({ ...formData, questions_answers: updatedQs });
+    // };
+
     const handleQuestionTextChange = (qIndex, e) => {
-        // Destructure the name and value properties off of event.target
         const { value } = e.target;
-        const updatedQs = [...formData.questions_answers];
-        // Set the text for this question
-        updatedQs[qIndex].text = value;
-        setFormData({ ...formData, questions_answers: updatedQs });
+        setFormData((prevFormData) => {
+            const updatedQs = [...prevFormData.questions_answers];
+            updatedQs[qIndex].text = value;
+            return {
+                ...prevFormData,
+                questions_answers: updatedQs,
+            };
+        });
     };
 
+
     const handleAnswerTextChange = (qIndex, aIndex, e) => {
-        // Destructure the name and value properties off of event.target
         const { value } = e.target;
-        const updatedQs = [...formData.questions_answers];
-        // Set the text for this answer
-        updatedQs[qIndex].answers[aIndex].text = value;
-        setFormData({ ...formData, questions_answers: updatedQs });
+        setFormData((prevFormData) => {
+            const updatedQs = [...prevFormData.questions_answers];
+            updatedQs[qIndex].answers[aIndex].text = value;
+            return {
+                ...prevFormData,
+                questions_answers: updatedQs,
+            };
+        });
     };
 
     const handleIsTrue = (qIndex, aIndex, e) => {
@@ -355,106 +370,55 @@ export default function CreateQuiz() {
                         />
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1</h2>
-                        <input
-                            style={styles.inputStyle}
-                            value={formData.questions_answers[0].text}
-                            onChange={handleQ1TextChange}
-                            name="q1text"
-                            type="text"
-                            className="form-control"
-                            placeholder="Question 1 Text"
-                            id="q1text"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1 Answer 1</h2>
-                        <input
-                            style={styles.inputStyle}
-                            value={formData.questions_answers[0].answers[0].text}
-                            onChange={handleQ1TextChange}
-                            name="q1textAnswer1"
-                            type="text"
-                            className="form-control"
-                            placeholder="Question 1 Answer 1"
-                            id="q1text"
-                        />
-                        <input
-                            style={styles.inputStyle}
-                            value={formData.questions_answers[0].answers[0].is_true}
-                            onChange={handleQ1Ans1CorrectChange}
-                            name="q1Answer1Boo"
-                            type="text"
-                            className="form-control"
-                            placeholder="Question 1 True or False"
-                            id="q1answer1boo"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1 Answer 2</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1 Answer 3</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1 Answer 4</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1 Feedback if True</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1 Feedback if False</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 2</h2>
-                        <input
-                            style={styles.inputStyle}
-                            value={formData.questions_answers[1].text}
-                            onChange={handleQ2TextChange}
-                            name="q2text"
-                            type="text"
-                            className="form-control"
-                            placeholder="Question 2 Text"
-                            id="q2text"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 2 Answer 1</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 2 Answer 2</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 2 Feedback if True</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 2 Feedback if False</h2>
-                    </Col>
-                </Row>
+                {/* Map thru questions and answers */}
+                {formData.questions_answers.map((question, qIndex) => (
+                    <div key={qIndex}>
+                        <Row>
+                            <Col>
+                                <h2>{`Question ${qIndex + 1}`}</h2>
+                                <input
+                                    style={styles.inputStyle}
+                                    value={question.text}
+                                    onChange={(e) => handleQuestionTextChange(qIndex, e)}
+                                    name={`q${qIndex + 1}text`}
+                                    type="text"
+                                    className="form-control"
+                                    placeholder={`Question ${qIndex + 1} Text`}
+                                    id={`q${qIndex + 1}text`}
+                                />
+                            </Col>
+                        </Row>
+                        {question.answers.map((answer, aIndex) => (
+                            <div key={aIndex}>
+                                <Row>
+                                    <Col>
+                                        <h2>{`Question Answer ${aIndex + 1}`}</h2>
+                                        <input
+                                            style={styles.inputStyle}
+                                            value={answer.text}
+                                            onChange={(e) => handleAnswerTextChange(qIndex, aIndex, e)}
+                                            name={`q${qIndex + 1}textAnswer${aIndex + 1}`}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder={`Question ${qIndex + 1} Answer ${aIndex + 1}`}
+                                            id={`q${qIndex + 1}textAnswer${aIndex + 1}`}
+                                        />
+                                        <input
+                                            style={styles.inputStyle}
+                                            value={answer.is_true}
+                                            onChange={(e) => handleIsTrue(qIndex, aIndex, e)}
+                                            name={`q${qIndex + 1}Answer${aIndex + 1}Boo`}
+                                            type="text"
+                                            className="form-control"
+                                            placeholder={`Question ${qIndex + 1} True or False`}
+                                            id={`q${qIndex + 1}Answer${aIndex + 1}Boo`}
+                                        />
+                                    </Col>
+                                </Row>
+                            </div>
+                        ))}
+                    </div>
+                ))}
             </form>
 
         </Container>
