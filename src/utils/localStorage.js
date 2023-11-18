@@ -1,3 +1,4 @@
+// Desc: Local storage functions
 // Get saved quizzes from local storage
 export const getSavedQuizzes = () => {
     const savedQuizzes = localStorage.getItem('quizzes')

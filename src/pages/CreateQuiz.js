@@ -141,6 +141,49 @@ export default function CreateQuiz() {
     // Question 3 Feedback True
     // Question 3 Feedback False
 
+    // state data to hold all form values.
+    const [formData, setFormData] = useState({
+        title: "",
+        description: "",
+        url: "",
+        score: "",
+        created: "",
+        modified: "",
+        id: "",
+        questions: [
+            {
+                text: "",
+                answers: [
+                    { text: "", is_true: false },
+                    { text: "", is_true: false },
+                    { text: "", is_true: true },
+                    { text: "", is_true: false }
+                ],
+                feedback_true: "",
+                feedback_false: ""
+            },
+            // ToDo: Add objects for Q2-3
+        ]
+    });
+
+    const handleInputChange = (e) => {
+        // Destructure the name and value properties off of event.target
+        // Update the appropriate state
+        console.log("handleInputChange reached");
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+        console.log(formData);
+    };
+
+    const handleSubmit = (e) => {
+        // Prevent default behavior of form submit
+        e.preventDefault();
+        // ToDo: Save data to localStorage
+        console.log("Save user input to localStorage");
+        // Redirect user to Home page
+        window.location.href = "/";
+    };
+
     // display user input fields to take in above data
     return (
 
@@ -150,94 +193,123 @@ export default function CreateQuiz() {
                     <h1>Create a new Quiz</h1>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <h2>Quiz Title</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Description</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>URL</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1 Text</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1 Answer 1</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1 Answer 2</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1 Answer 3</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1 Answer 4</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1 Feedback if True</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 1 Feedback if False</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 2</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 2 Text</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 2 Answer 1</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 2 Answer 2</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 2 Feedback if True</h2>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <h2>Question 2 Feedback if False</h2>
-                </Col>
-            </Row>
+            <form onSubmit={handleSubmit}>
+                <Row>
+                    <Col>
+                        <h2>Quiz Title</h2>
+                        <input
+                            onChange={handleInputChange}
+                            value={formData.title}
+                            name="title"
+                            type="text"
+                            className="form-control"
+                            placeholder="Quiz Title"
+                            id="title"
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Description</h2>
+                        <input
+                            onChange={handleInputChange}
+                            value={formData.description}
+                            name="description"
+                            type="text"
+                            className="form-control"
+                            placeholder="Quiz Description"
+                            id="description"
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>URL</h2>
+                        <input
+                            onChange={handleInputChange}
+                            value={formData.url}
+                            name="url"
+                            type="text"
+                            className="form-control"
+                            placeholder="url"
+                            id="url"
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1 Text</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1 Answer 1</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1 Answer 2</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1 Answer 3</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1 Answer 4</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1 Feedback if True</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 1 Feedback if False</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 2</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 2 Text</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 2 Answer 1</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 2 Answer 2</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 2 Feedback if True</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <h2>Question 2 Feedback if False</h2>
+                    </Col>
+                </Row>
+            </form>
 
         </Container>
 
-)
+    )
 };
 
