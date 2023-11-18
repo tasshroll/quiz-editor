@@ -2,7 +2,7 @@
 // When the user clicks on the "Create a new Quiz" button, they are taken to the Create Quiz page.
 
 
-// Exmaple of a quiz JSON object:
+// Example of a quiz JSON object:
 // {
 //     "created": "2020-09-09 09:26:39",
 //     "description": "Description",
@@ -143,28 +143,49 @@ export default function CreateQuiz() {
 
     // state data to hold all form values.
     const [formData, setFormData] = useState({
-        title: "",
+        created: "", // Date format "YYYY-MM-DD HH:mm:ss"
         description: "",
+        modified: "", // Date format "YYYY-MM-DD HH:mm:ss"
+        score: null,
+        title: "",
         url: "",
-        score: "",
-        created: "",
-        modified: "",
-        id: "",
-        questions: [
+        questions_answers: [
             {
-                text: "",
+                answer_id: null,
                 answers: [
-                    { text: "", is_true: false },
-                    { text: "", is_true: false },
-                    { text: "", is_true: true },
-                    { text: "", is_true: false }
+                    { is_true: false, text: "" },
+                    { is_true: false, text: "" },
+                    { is_true: true, text: "" },
+                    { is_true: false, text: "" }
                 ],
+                feedback_false: "",
                 feedback_true: "",
-                feedback_false: ""
+                text: ""
             },
-            // ToDo: Add objects for Q2-3
+            {
+                answer_id: null,
+                answers: [
+                    { is_true: true, text: "" },
+                    { is_true: false, text: "" }
+                ],
+                feedback_false: "",
+                feedback_true: "",
+                text: ""
+            },
+            {
+                answer_id: null,
+                answers: [
+                    { is_true: false, text: "" },
+                    { is_true: true, text: "" },
+                    { is_true: false, text: "" }
+                ],
+                feedback_false: "",
+                feedback_true: "",
+                text: ""
+            }
         ]
     });
+
 
     const handleInputChange = (e) => {
         // Destructure the name and value properties off of event.target
@@ -173,6 +194,60 @@ export default function CreateQuiz() {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         console.log(formData);
+    };
+
+    const handleQ1TextChange = (e) => {
+        const { value } = e.target;
+        const updatedQs = [...formData.questions_answers];
+        updatedQs[0].text = value;
+        setFormData({ ...formData, questions_answers: updatedQs });
+    };
+
+    const handleQ2TextChange = (e) => {
+        const { value } = e.target;
+        const updatedQs = [...formData.questions_answers];
+        updatedQs[1].text = value;
+        setFormData({ ...formData, questions_answers: updatedQs });
+    };
+    const handleQ3TextChange = (e) => {
+        const { value } = e.target;
+        const updatedQs = [...formData.questions_answers];
+        updatedQs[2].text = value;
+        setFormData({ ...formData, questions_answers: updatedQs });
+    };
+
+    const handleQ1Ans1CorrectChange = (e) => {
+        const { value } = e.target;
+        const updatedQs = [...formData.questions_answers];
+        updatedQs[0].answers[0].is_true = value;
+        setFormData({ ...formData, questions_answers: updatedQs });
+    };
+
+    const handleQuestionTextChange = (qIndex, e) => {
+        // Destructure the name and value properties off of event.target
+        const { value } = e.target;
+        const updatedQs = [...formData.questions_answers];
+        // Set the text for this question
+        updatedQs[qIndex].text = value;
+        setFormData({ ...formData, questions_answers: updatedQs });
+    };
+
+    const handleAnswerTextChange = (qIndex, aIndex, e) => {
+        // Destructure the name and value properties off of event.target
+        const { value } = e.target;
+        const updatedQs = [...formData.questions_answers];
+        // Set the text for this answer
+        updatedQs[qIndex].answers[aIndex].text = value;
+        setFormData({ ...formData, questions_answers: updatedQs });
+    };
+
+    const handleIsTrue = (qIndex, aIndex, e) => {
+        // Destructure boolean value off of event.target
+        const { value } = e.target;
+        const updatedQs = [...formData.questions_answers];
+        // Set True or False for this answer
+        updatedQs[qIndex].answers[aIndex].is_true = value;
+        setFormData({ ...formData, questions_answers: updatedQs });
     };
 
     const handleSubmit = (e) => {
@@ -184,11 +259,52 @@ export default function CreateQuiz() {
         window.location.href = "/";
     };
 
+    // Component for managing answers for each question
+    const AnswerInputs = ({ answers, handleAnswerTextChange, handleIsTrueChange }) => {
+        // map thru answers array and prompt for answer text and if a answer is True or False
+        return answers.map((answer, index) => (
+            <div key={index}>
+                <Row>
+                    <Col>
+                        <h2>{`Question Answer ${index + 1}`}</h2>
+                        <input
+                            style={styles.inputStyle}
+                            value={answer.text}
+                            onChange={(e) => handleAnswerTextChange(index, e)}
+                            name={`q${index + 1}textAnswer${index + 1}`}
+                            type="text"
+                            className="form-control"
+                            placeholder={`Question ${index + 1} Answer ${index + 1}`}
+                            id={`q${index + 1}textAnswer${index + 1}`}
+                        />
+                        <input
+                            style={styles.inputStyle}
+                            value={answer.is_true}
+                            onChange={(e) => handleIsTrueChange(index, e)}
+                            name={`q${index + 1}Answer${index + 1}Boo`}
+                            type="text"
+                            className="form-control"
+                            placeholder={`Question ${index + 1} True or False`}
+                            id={`q${index + 1}Answer${index + 1}Boo`}
+                        />
+                    </Col>
+                </Row>
+            </div>
+        ));
+    };
+    // css to style this page   
+    const styles = {
+        inputStyle: {
+            pading: '8px',
+            fontSize: '16px'
+        },
+    };
+
     // display user input fields to take in above data
     return (
 
-        <Container>
-            <Row>
+        <Container style={{ margin: '20px auto', maxWidth: '600px' }}>
+            <Row style={{ marginBottom: '10px' }}>
                 <Col>
                     <h1>Create a new Quiz</h1>
                 </Col>
@@ -198,6 +314,7 @@ export default function CreateQuiz() {
                     <Col>
                         <h2>Quiz Title</h2>
                         <input
+                            style={styles.inputStyle}
                             onChange={handleInputChange}
                             value={formData.title}
                             name="title"
@@ -212,6 +329,7 @@ export default function CreateQuiz() {
                     <Col>
                         <h2>Description</h2>
                         <input
+                            style={styles.inputStyle}
                             onChange={handleInputChange}
                             value={formData.description}
                             name="description"
@@ -226,6 +344,7 @@ export default function CreateQuiz() {
                     <Col>
                         <h2>URL</h2>
                         <input
+                            style={styles.inputStyle}
                             onChange={handleInputChange}
                             value={formData.url}
                             name="url"
@@ -239,16 +358,41 @@ export default function CreateQuiz() {
                 <Row>
                     <Col>
                         <h2>Question 1</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 1 Text</h2>
+                        <input
+                            style={styles.inputStyle}
+                            value={formData.questions_answers[0].text}
+                            onChange={handleQ1TextChange}
+                            name="q1text"
+                            type="text"
+                            className="form-control"
+                            placeholder="Question 1 Text"
+                            id="q1text"
+                        />
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <h2>Question 1 Answer 1</h2>
+                        <input
+                            style={styles.inputStyle}
+                            value={formData.questions_answers[0].answers[0].text}
+                            onChange={handleQ1TextChange}
+                            name="q1textAnswer1"
+                            type="text"
+                            className="form-control"
+                            placeholder="Question 1 Answer 1"
+                            id="q1text"
+                        />
+                        <input
+                            style={styles.inputStyle}
+                            value={formData.questions_answers[0].answers[0].is_true}
+                            onChange={handleQ1Ans1CorrectChange}
+                            name="q1Answer1Boo"
+                            type="text"
+                            className="form-control"
+                            placeholder="Question 1 True or False"
+                            id="q1answer1boo"
+                        />
                     </Col>
                 </Row>
                 <Row>
@@ -279,11 +423,16 @@ export default function CreateQuiz() {
                 <Row>
                     <Col>
                         <h2>Question 2</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <h2>Question 2 Text</h2>
+                        <input
+                            style={styles.inputStyle}
+                            value={formData.questions_answers[1].text}
+                            onChange={handleQ2TextChange}
+                            name="q2text"
+                            type="text"
+                            className="form-control"
+                            placeholder="Question 2 Text"
+                            id="q2text"
+                        />
                     </Col>
                 </Row>
                 <Row>
