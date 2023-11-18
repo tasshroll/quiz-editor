@@ -8,6 +8,8 @@ import {
     Card,
     Row
 } from "react-bootstrap"
+import { getSavedQuizzes } from '../utils/localStorage';
+
 
 export default function Home() {
 
@@ -110,38 +112,36 @@ export default function Home() {
     const [savedQuizzes, setSavedQuizzes] = useState([]);
 
     // create function to getSavedQuizzes from local storage
-    const quizzes = localStorage.getItem("quizzes");
+    const quizzes = getSavedQuizzes();
 
     // localStorage contains object quizzes. questions_answers is an array of objects
     // On page load, see if quizzes exist and display them
     useEffect(() => {
-        if (!quizzes) {
-            localStorage.setItem("quizzes", JSON.stringify([]));
-            displayQuizzes([]);
-        }
+        displayQuizzes([]);
     }, []);
 
-    function displayQuizzes(quizzes) {
+    // function to display previously saved quizzes
+    function displayQuizzes() {
         console.log("in function displayQuizzes");
+    
+        const quizzes = getSavedQuizzes();
         console.log(quizzes);
-
-        // if quizzes is null, return null
+    
         if (!quizzes) {
             return null;
         }
-        //return quizzes.map((quiz, index) => {
-        quizzes.map((quiz, index) => {
-
-            return (
-                <Card key={index}>
-                    <Card.Body>
-                        <Card.Title>{quiz.title}</Card.Title>
-                        <Card.Text>{quiz.description}</Card.Text>
-                        <Button variant="primary" href="/edit">Edit</Button>
-                    </Card.Body>
-                </Card>
-            )
-        })
+    
+        return quizzes.map((quiz, index) => (
+            <Card key={index}>
+                <Card.Body>
+                    <div>
+                        {/* Display quiz title & edit button */}
+                        <Card.Title>{quiz.quizTitle}</Card.Title>
+                        <Button variant="primary" href={`/edit/${quiz.id}`}>Edit</Button>
+                    </div>
+                </Card.Body>
+            </Card>
+        ));
     } // end of displayQuizzes
 
     return (
@@ -154,7 +154,7 @@ export default function Home() {
             <Row>
                 <Col>
                     <h2>Available Quizzes</h2>
-                    {/* {quizzes ? displayQuizzes(quizzes) : null} */}
+                    {displayQuizzes()}
                 </Col>
             </Row>
             <Row>
@@ -165,4 +165,4 @@ export default function Home() {
         </Container>
     )
 
-    };
+};
