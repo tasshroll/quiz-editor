@@ -1,40 +1,5 @@
 // Create Quiz Page
 // When the user clicks on the "Create a new Quiz" button, they are taken to the Create Quiz page.
-// This page has a form with the following fields:
-
-// Title
-// Description
-// URL
-// Question 1
-// Question 1 Text
-// Question 1 Answer 1
-//   is_true: false
-// Question 1 Answer 2
-//   is_true: false
-// Question 1 Answer 3
-//   is_true: true
-// Question 1 Answer 4
-//   is_true: false
-// Question 1 Feedback True
-// Question 1 Feedback False
-
-// Question 2
-// Question 2 Text
-// Question 2 Answer 1
-//   is_true: true
-// Question 2 Answer 2
-//   is_true: false
-// Question 2 Feedback True
-// Question 2 Feedback False
-
-// Question 3
-// Question 3 Text
-// Question 3 Answer 1
-//   is_true: false
-// Question 3 Answer 2
-//   is_true: true
-// Question 3 Feedback True
-// Question 3 Feedback False
 
 
 // Exmaple of a quiz JSON object:
@@ -121,7 +86,7 @@
 //     "title": "quiz title",
 //     "url": "https://www.youtube.com/watch?v=e6EGQFJLl04"
 //   }
-  
+
 // After user enters data into the form, the user clicks on the Submit button.
 // When the user clicks on the Submit button, the form data is saved to localStorage.
 // The user is then taken to the Home page and this quiz title is displayed there.
@@ -137,7 +102,142 @@ import {
     Row
 } from "react-bootstrap"
 
+
 export default function CreateQuiz() {
 
     console.log("CreateQuiz page");
+
+    // Title
+    // Description
+    // URL
+    // Question 1
+    // Question 1 Text
+    // Question 1 Answer 1
+    //   is_true: false
+    // Question 1 Answer 2
+    //   is_true: false
+    // Question 1 Answer 3
+    //   is_true: true
+    // Question 1 Answer 4
+    //   is_true: false
+    // Question 1 Feedback True
+    // Question 1 Feedback False
+
+    // Question 2
+    // Question 2 Text
+    // Question 2 Answer 1
+    //   is_true: true
+    // Question 2 Answer 2
+    //   is_true: false
+    // Question 2 Feedback True
+    // Question 2 Feedback False
+
+    // Question 3
+    // Question 3 Text
+    // Question 3 Answer 1
+    //   is_true: false
+    // Question 3 Answer 2
+    //   is_true: true
+    // Question 3 Feedback True
+    // Question 3 Feedback False
+
+    // display user input fields to take in above data
+    return (
+
+        <Container>
+            <Row>
+                <Col>
+                    <h1>Create a new Quiz</h1>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Quiz Title</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Description</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>URL</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1 Text</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1 Answer 1</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1 Answer 2</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1 Answer 3</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1 Answer 4</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1 Feedback if True</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 1 Feedback if False</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 2</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 2 Text</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 2 Answer 1</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 2 Answer 2</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 2 Feedback if True</h2>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2>Question 2 Feedback if False</h2>
+                </Col>
+            </Row>
+
+        </Container>
+
+)
 };
+
