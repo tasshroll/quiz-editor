@@ -3,6 +3,8 @@ Quiz builder
 
 ## Deployed Webpage
 
+ https://quiz-editor-tasshroll.vercel.app/
+
 
 ## Git Hub Repository
 
@@ -12,7 +14,12 @@ https://github.com/tasshroll/quiz-editor
 
 App that constructs a UI to create quizzes. User can create a quiz and provide a description and three multiple choice questions. Only one answer can true for each question.
 
-The quiz is stored into local storage after it is created.
+Quizzes are stored into local storage. View object data.
+
+## Future Development
+
+Future development is to allow user to select existing quizzes to edit.
+Components inside of CreateQuiz should be re-used to accomplish this.
 
 ## Requirements
 A-	Requirements: 
@@ -117,10 +124,6 @@ Please use functional components, demonstrate your thought process not the over 
 }
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Future Development
-
-Future development is to allow user to select existing quizzes from local storage and edit the conents. 
 
 ## License
 
