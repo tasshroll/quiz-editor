@@ -1,11 +1,7 @@
-// Create Quiz Page
-// When the user clicks on the "Create a new Quiz" button, they are taken to the Create Quiz page.
-
 // On Create Quiz page, the user is presented with a form to create new quiz with 3 questions.
 
 // When user clicks on the Submit button, the form data is saved to localStorage.
 // The user is then taken to the Home page and quiz title is displayed there.
-// The date and time this quiz was created is saved to the JSON object.
 
 import React, { useState, useEffect } from 'react';
 // React Bootstrap components
@@ -127,6 +123,15 @@ export default function CreateQuiz() {
     const handleSubmit = (e) => {
         // Prevent default behavior of form submit
         e.preventDefault();
+        // Ensure that only 1 and at least 1 checkbox was marked true.
+        const isAnyAnswerInvalid = formData.questions_answers.some((question) => {
+            return question.answers.filter((answer) => answer.is_true).length !== 1;
+        });
+    
+        if (isAnyAnswerInvalid) {
+            alert('Please select one correct answer and only one correct answer for each question.');
+            return;
+        }
         // Record the time and save to formData
         const now = new Date();
         const nowStr = now.toLocaleString();
@@ -228,7 +233,8 @@ export default function CreateQuiz() {
                                 />
                             </Col>
                         </Row>
-                        <h3>Check the box next to the answer that is true. Only one question can be true</h3>
+                        <h3>Check the box next to the answer that is correct. Only one question can be correct.</h3>
+                        {/* // Ensure that only 1 and at least 1 checkbox was marked true. */}
 
                         {question.answers.map((answer, aIndex) => (
                             <div key={aIndex}>
@@ -258,6 +264,7 @@ export default function CreateQuiz() {
                                 </Row>
                             </div>
                         ))}
+
                         {/* // Feedback for correct answer */}
                         <Row>
                             <Col>

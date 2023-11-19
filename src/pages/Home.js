@@ -13,102 +13,7 @@ import { getSavedQuizzes } from '../utils/localStorage';
 
 export default function Home() {
 
-    // Title page is "Quiz Creator"
 
-    // Display button to create a new Quiz
-
-    // get saved Quizzes from localStorage if JSON object exists for quizzes
-    // If quizzes exists, 
-    //      Display Quiz titles
-    //      Display button to edit a Quiz
-
-    // Example of a quizzes JSON object:
-
-    // {
-    //   "created": "2020-09-09 09:26:39",
-    //   "description": "Description",
-    //   "id": 29,
-    //   "modified": "2020-09-09 09:26:39",
-    //   "questions_answers": [
-    //     {
-    //       "answer_id": null,
-    //       "answers": [
-    //         {
-    //           "id": 122,
-    //           "is_true": false,
-    //           "text": "question 1 answer 1 false"
-    //         },
-    //         {
-    //           "id": 123,
-    //           "is_true": false,
-    //           "text": "question 1 answer 2 false"
-    //         },
-    //         {
-    //           "id": 124,
-    //           "is_true": true,
-    //           "text": "question 1 answer 3 true"
-    //         },
-    //         {
-    //           "id": 125,
-    //           "is_true": false,
-    //           "text": "question 1 answer 4 false"
-    //         }
-    //       ],
-    //       "feedback_false": "question 1 false feedback",
-    //       "feedback_true": "question 1 true feedback",
-    //       "id": 53,
-    //       "text": "question 1 text"
-    //     },
-    //     {
-    //       "answer_id": null,
-    //       "answers": [
-    //         {
-    //           "id": 126,
-    //           "is_true": true,
-    //           "text": "question 2 answer 1 true"
-    //         },
-    //         {
-    //           "id": 127,
-    //           "is_true": false,
-    //           "text": "question 2 answer 2 false"
-    //         }
-    //       ],
-    //       "feedback_false": "question 2 false feedback",
-    //       "feedback_true": "question 2 true feedback",
-    //       "id": 54,
-    //       "text": "question 2 text"
-    //     },
-    //     {
-    //       "answer_id": null,
-    //       "answers": [
-    //         {
-    //           "id": 128,
-    //           "is_true": false,
-    //           "text": "question 3 answer 1 false"
-    //         },
-    //         {
-    //           "id": 129,
-    //           "is_true": true,
-    //           "text": "question 3 answer 2 true"
-    //         },
-    //         {
-    //           "id": 130,
-    //           "is_true": false,
-    //           "text": "question 3 answer 3 false"
-    //         }
-    //       ],
-    //       "feedback_false": "question 3 false feedback",
-    //       "feedback_true": "question 3 true feedback",
-    //       "id": 55,
-    //       "text": "question 3 text"
-    //     }
-    //   ],
-    //   "score": null,
-    //   "title": "quiz title",
-    //   "url": "https://www.youtube.com/watch?v=e6EGQFJLl04"
-    // }
-
-    console.log("Home Page");
     const [savedQuizzes, setSavedQuizzes] = useState([]);
 
     // create function to getSavedQuizzes from local storage
@@ -122,47 +27,81 @@ export default function Home() {
 
     // function to display previously saved quizzes
     function displayQuizzes() {
-        console.log("in function displayQuizzes");
-    
+
         const quizzes = getSavedQuizzes();
         console.log(quizzes);
-    
+
         if (!quizzes) {
             return null;
         }
-    
+
         return quizzes.map((quiz, index) => (
             <Card key={index}>
                 <Card.Body>
-                    <div>
-                        {/* Display quiz title & edit button */}
-                        <Card.Title>{quiz.quizTitle}</Card.Title>
-                        <Button variant="primary" href={`/edit/${quiz.id}`}>Edit</Button>
+                    <div className="d-flex justify-content-between align-items-center">
+                        {/* Display quiz title */}
+                        <div>
+                            <p style={styles.quizTitle}>{quiz.quizTitle}</p>
+                        </div>
+
+                        {/* Display edit button */}
+                        <div>
+                            <Button variant="primary" href={`/edit/${quiz.id}`}>Edit</Button>
+                        </div>
                     </div>
                 </Card.Body>
             </Card>
         ));
-    } // end of displayQuizzes
+    }     // end of displayQuizzes
 
+    const styles = {
+        quizTitle: {
+            marginBottom: 0,
+            marginTop: 30,
+            color: 'green',
+            fontSize: '1.5rem',
+            textAlign: "center"
+        },
+        title: {
+            fontSize: "1rem",
+            fontWeight: "bold",
+            textAlign: "center"
+        },
+        text: {
+            width: 400,
+            padding: 15,
+            margin: 40,
+            fontSize: "1.5rem",
+            textAlign: "center"
+        },
+        button: {
+            paddingTop: 0,
+            color: 'pink',
+            fontSize: '1.5rem',
+            textAlign: "center",
+            backgroundColor: 'aqua',
+        }
+    };
     return (
         <Container>
             <Row>
-                <Col>
+                <Col style={styles.title}>
                     <h1>Quiz Creator</h1>
                 </Col>
             </Row>
             <Row>
-                <Col>
-                    <h2>Available Quizzes</h2>
-                    {displayQuizzes()}
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Button variant="primary" href="/create">Create a new Quiz</Button>
+                <Col style={styles.title}>
+                    <h2>Available Quizzes to Edit</h2>
+                    <div>
+                        {displayQuizzes()}
+                    </div>
+                    <Row>
+                        <Col style={{ marginTop: "30px" }}>
+                            <Button style={styles.button} variant="primary" href="/create">Create a new Quiz</Button>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
         </Container>
     )
-
 };
