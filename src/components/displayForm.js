@@ -1,9 +1,8 @@
-// On Create Quiz page, the user is presented with a form to create new quiz with 3 questions.
-
-// When user clicks on the Submit button, the form data is saved to localStorage.
-// The user is then taken to the Home page and quiz title is displayed there.
+// Form to create a new quiz or edit an existing quiz
 
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
 // React Bootstrap components
 import {
     Container,
@@ -12,58 +11,14 @@ import {
     Card,
     Row
 } from "react-bootstrap"
-import { saveNewQuiz } from '../utils/localStorage';
 
+import { getSavedQuizzes, saveQuiz } from '../utils/localStorage';
 
-export default function CreateQuiz() {
+// export default function EditQuiz({quizTitle }) {
 
-    const emptyFormData = {
-        created: "", // Date format "YYYY-MM-DD HH:mm:ss"
-        description: "",
-        modified: "", // Date format "YYYY-MM-DD HH:mm:ss"
-        score: null,
-        title: "",
-        url: "",
-        questions_answers: [
-            {
-                answer_id: null,
-                answers: [
-                    { is_true: false, text: "" },
-                    { is_true: false, text: "" },
-                    { is_true: false, text: "" },
-                    { is_true: false, text: "" }
-                ],
-                feedback_false: "",
-                feedback_true: "",
-                text: ""
-            },
-            {
-                answer_id: null,
-                answers: [
-                    { is_true: false, text: "" },
-                    { is_true: false, text: "" }
-                ],
-                feedback_false: "",
-                feedback_true: "",
-                text: ""
-            },
-            {
-                answer_id: null,
-                answers: [
-                    { is_true: false, text: "" },
-                    { is_true: false, text: "" },
-                    { is_true: false, text: "" }
-                ],
-                feedback_false: "",
-                feedback_true: "",
-                text: ""
-            }
-        ]
-    };
-
-
-    // state data to hold all form values. Initialize with empty strings
-    const [formData, setFormData] = useState(emptyFormData);
+//         console.log("Quiz title is", quizTitle);
+export default function displayForm(props) {
+    
 
     const handleInputChange = (e) => {
         // Destructure the name and value properties off of event.target
@@ -129,7 +84,7 @@ export default function CreateQuiz() {
         const isAnyAnswerInvalid = formData.questions_answers.some((question) => {
             return question.answers.filter((answer) => answer.is_true).length !== 1;
         });
-
+    
         if (isAnyAnswerInvalid) {
             alert('Please select one correct answer and only one correct answer for each question.');
             return;
@@ -144,7 +99,7 @@ export default function CreateQuiz() {
             created: nowStr,
         };
         // Save data to localStorage
-        saveNewQuiz(formData.title, updatedFormData);
+        saveQuiz(formData.title, updatedFormData);
         // Redirect user to Home page
         window.location.href = "/";
     };
@@ -168,7 +123,7 @@ export default function CreateQuiz() {
         <Container style={{ margin: '20px auto', maxWidth: '600px' }}>
             <Row style={{ marginBottom: '10px' }}>
                 <Col>
-                    <h1>Create a new Quiz</h1>
+                    <h1>Edit Quiz: {`${quizTitle}`}</h1>
                 </Col>
             </Row>
             <form onSubmit={handleSubmit}>
@@ -217,8 +172,8 @@ export default function CreateQuiz() {
                         />
                     </Col>
                 </Row>
-                {/* Map thru questions and answers */}
-                {formData.questions_answers.map((question, qIndex) => (
+{/* Map thru questions and answers */}
+{formData.questions_answers.map((question, qIndex) => (
                     <div key={qIndex}>
                         <Row>
                             <Col>
@@ -256,6 +211,7 @@ export default function CreateQuiz() {
                                         <input
                                             style={styles.inputStyle}
                                             type="checkbox"
+                                            checked={answer.is_true}
                                             onChange={(e) => handleIsTrue(qIndex, aIndex, e)}
                                             name={`q${qIndex + 1}Answer${aIndex + 1}Boo`}
                                             className="form-control"
@@ -304,10 +260,9 @@ export default function CreateQuiz() {
                         </Button>
                     </Col>
                 </Row>
-            </form>
 
+            </form>
         </Container>
 
     )
 };
-

@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
+// import history
+
 
 // React Bootstrap components
 import {
@@ -9,9 +12,15 @@ import {
     Row
 } from "react-bootstrap"
 import { getSavedQuizzes } from '../utils/localStorage';
+import EditQuiz from "./EditQuiz";
+import EditQ from "./EditQ";
+
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Home() {
+
+    const navigate = useNavigate();
 
 
     const [savedQuizzes, setSavedQuizzes] = useState([]);
@@ -24,6 +33,25 @@ export default function Home() {
     useEffect(() => {
         displayQuizzes([]);
     }, []);
+
+    const handleEditClick = (quizTitle) => {
+        console.log("Edit button clicked for", quizTitle);
+        navigate('/edit', { state: { quizTitle: quizTitle } });
+
+    }
+
+    // const handleEditClick = (e) => {
+    //     console.log("Edit button clicked");
+    //     e.preventDefault();
+    //     console.log(e.target.value, "is the quiz to edit");
+    //     const quizTitle = e.target.value;
+    //     return (
+    // <EditQuiz quizTitle={quizTitle}/>
+
+    // Change route to "edit" so it runs EditQuiz page and pass quizTitle as props
+    //         <Link to="/edit" state={{ quizTitle: quizTitle }} />
+    //     )
+    // }
 
     // function to display previously saved quizzes
     function displayQuizzes() {
@@ -45,8 +73,25 @@ export default function Home() {
                         </div>
 
                         {/* Display edit button */}
+                        {/* <div> */}
+                        {/* <Link to={`/edit`} state={{ quizTitle: quiz.quizTitle }}> */}
+
+
+                        {/* <Button variant="primary">Edit</Button> */}
+                        {/* </Link> */}
+                        {/* </div> */}
+                        {/* // Invoke EditQuiz component */}
                         <div>
-                            <Button variant="primary" href={`/edit/${quiz.id}`}>Edit</Button>
+                            {/* When Edit button is clicked, invoke EditQuiz component and get quizTitle */}
+                            {/* Edit button with link to the EditQuiz page */}
+                            <Link to={`/edit/${quiz.quizTitle}`} >
+
+                                <Button style={styles.button} variant="primary">
+                                    Edit
+                                </Button>
+                            </Link>
+
+
                         </div>
                     </div>
                 </Card.Body>
@@ -97,7 +142,12 @@ export default function Home() {
                     </div>
                     <Row>
                         <Col style={{ marginTop: "30px" }}>
-                            <Button style={styles.button} variant="primary" href="/create">Create a new Quiz</Button>
+                            {/* Create New Quiz button with link to the CreateQuiz page */}
+                            <Link to={`/create`} >
+                                <Button style={styles.button} variant="primary">
+                                    Create New Quiz
+                                </Button>
+                            </Link>
                         </Col>
                     </Row>
                 </Col>

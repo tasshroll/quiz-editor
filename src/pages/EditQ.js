@@ -4,6 +4,8 @@
 // The user is then taken to the Home page and quiz title is displayed there.
 
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
 // React Bootstrap components
 import {
     Container,
@@ -12,10 +14,14 @@ import {
     Card,
     Row
 } from "react-bootstrap"
-import { saveNewQuiz } from '../utils/localStorage';
 
+import { getSavedQuizzes, saveQuiz } from '../utils/localStorage';
 
-export default function CreateQuiz() {
+// export default function EditQuiz({quizTitle }) {
+
+//         console.log("Quiz title is", quizTitle);
+export default function EditQ() {
+    const { quizTitle } = useParams();
 
     const emptyFormData = {
         created: "", // Date format "YYYY-MM-DD HH:mm:ss"
@@ -60,10 +66,35 @@ export default function CreateQuiz() {
             }
         ]
     };
-
-
-    // state data to hold all form values. Initialize with empty strings
     const [formData, setFormData] = useState(emptyFormData);
+
+    useEffect(() => {
+        if (quizTitle) {
+            console.log("Quiz title is", quizTitle);
+
+            const quizzes = getSavedQuizzes();
+
+            if (quizzes) {
+                console.log("Quizzes found in local storage:", quizzes);
+                const quiz = quizzes.find((quiz) => quiz.quizData.title === quizTitle);
+
+                if (quiz) {
+                    console.log("Found quiz in local storage", quiz);
+                    console.log("Quiz data is", quiz.quizData);
+                    // Use found quizData to set form data
+                    setFormData(quiz.quizData);
+                    console.log("Form data is", formData);
+
+                } else {
+                    console.log("No quiz found with title:", quizTitle);
+                }
+            } else {
+                console.log("No quizzes found in local storage.");
+            }
+        } else {
+            console.log("Quiz title is undefined.");
+        }
+    }, [quizTitle]);
 
     const handleInputChange = (e) => {
         // Destructure the name and value properties off of event.target
@@ -129,22 +160,20 @@ export default function CreateQuiz() {
         const isAnyAnswerInvalid = formData.questions_answers.some((question) => {
             return question.answers.filter((answer) => answer.is_true).length !== 1;
         });
-
+    
         if (isAnyAnswerInvalid) {
             alert('Please select one correct answer and only one correct answer for each question.');
             return;
         }
-        // Record the time and save to formData
+        // Record the time and save to formData in the modified field
         const now = new Date();
         const nowStr = now.toLocaleString();
-        // Update the created field
-        // Create a new form data object with the updated 'created' field
         const updatedFormData = {
             ...formData,
-            created: nowStr,
+            modified: nowStr,
         };
         // Save data to localStorage
-        saveNewQuiz(formData.title, updatedFormData);
+        saveQuiz(formData.title, updatedFormData);
         // Redirect user to Home page
         window.location.href = "/";
     };
@@ -168,7 +197,7 @@ export default function CreateQuiz() {
         <Container style={{ margin: '20px auto', maxWidth: '600px' }}>
             <Row style={{ marginBottom: '10px' }}>
                 <Col>
-                    <h1>Create a new Quiz</h1>
+                    <h1>Edit Quiz: {`${quizTitle}`}</h1>
                 </Col>
             </Row>
             <form onSubmit={handleSubmit}>
@@ -217,8 +246,8 @@ export default function CreateQuiz() {
                         />
                     </Col>
                 </Row>
-                {/* Map thru questions and answers */}
-                {formData.questions_answers.map((question, qIndex) => (
+{/* Map thru questions and answers */}
+{formData.questions_answers.map((question, qIndex) => (
                     <div key={qIndex}>
                         <Row>
                             <Col>
@@ -256,6 +285,7 @@ export default function CreateQuiz() {
                                         <input
                                             style={styles.inputStyle}
                                             type="checkbox"
+                                            checked={answer.is_true}
                                             onChange={(e) => handleIsTrue(qIndex, aIndex, e)}
                                             name={`q${qIndex + 1}Answer${aIndex + 1}Boo`}
                                             className="form-control"
@@ -304,10 +334,9 @@ export default function CreateQuiz() {
                         </Button>
                     </Col>
                 </Row>
-            </form>
 
+            </form>
         </Container>
 
     )
 };
-

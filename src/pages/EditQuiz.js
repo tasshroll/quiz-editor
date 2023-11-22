@@ -4,6 +4,8 @@
 // The user is then taken to the Home page and quiz title is displayed there.
 
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
 // React Bootstrap components
 import {
     Container,
@@ -12,25 +14,113 @@ import {
     Card,
     Row
 } from "react-bootstrap"
+
 import { getSavedQuizzes, saveQuiz } from '../utils/localStorage';
 
+// export default function EditQuiz({quizTitle }) {
 
-export default function EditQuiz(quizTitle) {
+//         console.log("Quiz title is", quizTitle);
+export default function EditQuiz(props) {
+    const { quizTitle } = props.location.state;
+    console.log("Quiz title is", quizTitle);
+
+    useEffect(() => {
+        if (quizTitle) {
+            console.log("Quiz title is", quizTitle);
+
+            const quizzes = getSavedQuizzes();
+
+            if (quizzes) {
+                console.log("Quizzes found in local storage:", quizzes);
+                const quiz = quizzes.find((quiz) => quiz.quizData.title === quizTitle);
+
+                if (quiz) {
+                    console.log("Found quiz:", quiz);
+                    // Further logic with the found quiz
+                } else {
+                    console.log("No quiz found with title:", quizTitle);
+                }
+            } else {
+                console.log("No quizzes found in local storage.");
+            }
+        } else {
+            console.log("Quiz title is undefined.");
+        }
+    }, [quizTitle]);
+
+
+    // // Get the quiz title from the URL and convert to a string
+    // const quizTitle = window.location.pathname.split('/').pop();
+    // console.log("Quiz title is", quizTitle);
+
+    // // convert quizTitle to a string
+    // const quizTitleStr = quizTitle.toString();
+    // console.log("Quiz title string is", quizTitleStr);
+
 
     // retreive saved quizzes from local storage
-    const quizzes = getSavedQuizzes();
+    // const quizzes = getSavedQuizzes();
+    // console.log("Quizes from local storage are", quizzes);
 
-    // Find quiz that we want to edit
-    const quiz = quizzes.find((quiz) => quiz.quizTitle === quizTitle);
+    // // If no quizzes exist, return null
+    // if (!quizzes) {
+    //     // return null;
+    //     console.log('No quizzes exist!');
+    // }
 
-    // If no quiz is found, redirect user to Home page
-    if (!quiz) {
-        console.log('No quiz found!');
-        window.location.href = "/";
-    }
+    // Look through all quizzes in the returned array. Find the quizData where title matches quizTitle
+// quizzes is an array
+// Data is
+// quizData
 
-    // Set formData to the quiz data
-    const [formData, setFormData] = useState(quiz.quizData);
+// created: "", 
+//         description: "",
+//         modified: "", 
+//         score: null,
+//         title: "",
+//         url: "",
+//         questions_answers: [
+//             {
+//                 answer_id: null,
+//                 answers: [
+//                     { is_true: false, text: "" },
+//                     { is_true: false, text: "" },
+//                     { is_true: false, text: "" },
+//                     { is_true: false, text: "" }
+//                 ],
+//                 feedback_false: "",
+//                 feedback_true: "",
+//                 text: ""
+//             },
+//             {
+//                 answer_id: null,
+//                 answers: [
+//                     { is_true: false, text: "" },
+//                     { is_true: false, text: "" }
+//                 ],
+//                 feedback_false: "",
+//                 feedback_true: "",
+//                 text: ""
+//             },
+//             {
+//                 answer_id: null,
+//                 answers: [
+//                     { is_true: false, text: "" },
+//                     { is_true: false, text: "" },
+//                     { is_true: false, text: "" }
+//                 ],
+//                 feedback_false: "",
+//                 feedback_true: "",
+//                 text: ""
+//             }
+//         ]
+
+
+    // // Set formData to the quiz data
+    // const [formData, setFormData] = useState(quiz.quizData);
+    const [formData, setFormData] = useState();
+
+    console.log("formData is", formData);
 
     const handleInputChange = (e) => {
         // Destructure the name and value properties off of event.target
